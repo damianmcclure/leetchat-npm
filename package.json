@@ -1,0 +1,21 @@
+{
+  "name": "leetchat",
+  "version": "1.0.0",
+  "description": "NPM Library for making bots for leetchat",
+  "main": "leetchat.js",
+  "scripts": {
+    "test": "forever leetchat.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/mcclureski/leetchat-npm/"
+  },
+  "keywords": [
+    "leetchat",
+    "leetchat.js",
+    "unrealsecurity",
+    "unrealsecurity.net"
+  ],
+  "author": "Mcclures",
+  "license": "WTFPL"
+}
