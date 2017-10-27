@@ -2,7 +2,7 @@
 NPM Library for making bots for leetchat
 ## Usage
 ```js
-var leetchat = require("./leetchat-lib.js");
+var leetchat = require("leetchat");
 var pref = "v-";
 
 exports.userIsOnline = function(_user, _pass, _origin, _time, _timestamp) {
