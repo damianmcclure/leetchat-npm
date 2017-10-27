@@ -25,3 +25,6 @@ leetchat.receiveMessages();
 ## Information
 You cannot install this under -g or globally
 make sure the example js is in the root with the node_modules
+## License
+Do What The Fuck You Want Public License
+https://spdx.org/licenses/WTFPL.html
