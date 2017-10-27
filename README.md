@@ -1,6 +1,6 @@
 # leetchat-npm
 NPM Library for making bots for leetchat
-## Usage
+## Usage (client.js)
 ```js
 var leetchat = require("leetchat");
 
