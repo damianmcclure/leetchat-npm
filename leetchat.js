@@ -1,11 +1,3 @@
-var server = '';
-var port = 80;
-var ssl = false;
-var appname = 'leetchat';
-var channel = '';
-var username = '';
-var password = '';
-var messageHistory = [];
 (function(global) {
     'use strict';
     // existing version for noConflict()
@@ -216,12 +208,20 @@ var messageHistory = [];
     : typeof global !== 'undefined' ? global
     : this
 );
+var server = '';
+var port = 80;
+var ssl = false;
+var appname = 'leetchat';
+var channel = '';
+var username = '';
+var password = '';
+var messageHistory = [];
 var http = require('http');
 var chost = '/' + appname + '/' + appname + '.php';
 var online_user_update_speed = 6000;
 var messages_update_speed = 4000;
 if (ssl == true) { http = require('https'); };
-var def = require('./leetchat.js');
+var def = require('./client.js');
 
 var aa = {
 	reset: "\x1b[0m",
@@ -281,6 +281,8 @@ exports.printunsafe = function(str){
 
 exports.receiveMessages = function(){
 	var params = 'username=' + encodeURIComponent(Base64.encode(username)) + '&password=' + encodeURIComponent(Base64.encode(password)) + '&channel=' + encodeURIComponent(Base64.encode(channel)) + '&req=_' + Math.floor(Math.random() * (999999 - 100 + 1)) + 100;
+	var _channel = channel;
+	var _server = server;
 	var options = {
 		host: server,
 		method: 'POST',
@@ -297,7 +299,8 @@ exports.receiveMessages = function(){
 		res.on('data', function (response) {
 			if (response.length > 0) {
 				if (response == 'ERR_IP_BANNED') {
-					console.log('Your IP address is banned!');
+					//console.log('Your IP address is banned!');
+					console.log((aa.bright + fg.red) + 'Your IP address is banned!' + (aa.reset));
 				} else {
 					var messages = response.split("\n");
 					for (i = 0; i < messages.length; i++) {
@@ -313,8 +316,8 @@ exports.receiveMessages = function(){
 									var _timestamp = now.getFullYear()+'/'+(now.getMonth()+1)+'/'+now.getDate();
 									_timestamp += ' '+now.getHours()+':'+now.getMinutes()+':'+now.getSeconds();
 									//console.log({_user, _pass, _msg, _timestamp});
-									console.log('USER: ' + (aa.bright + fg.magenta + _user + aa.reset) + ' PASS: ' + (aa.bright + fg.magenta + _pass + aa.reset) + ' MSG: ' + (aa.bright + fg.magenta + _msg + aa.reset) + ' TIMESTAMP: ' + (aa.bright + fg.magenta + _timestamp + aa.reset));
-									def.receiveMsg(_user, _pass, _timestamp, _msg);
+									console.log('USER: ' + (aa.bright + fg.magenta + _user + aa.reset) + ' PASS: ' + (aa.bright + fg.magenta + _pass + aa.reset) + ' MSG: ' + (aa.bright + fg.magenta + _msg + aa.reset) + ' CHANNEL: ' + (aa.bright + fg.magenta + _channel + aa.reset) + ' TIMESTAMP: ' + (aa.bright + fg.magenta + _timestamp + aa.reset));
+									def.receiveMsg(_user, _pass, _timestamp, _msg, _channel, _server);
 								}
 								messageHistory.push(i2);
 							}
@@ -332,6 +335,8 @@ exports.receiveMessages = function(){
 
 exports.listOnlineUsers = function(){
 	var params = 'username=' + encodeURIComponent(Base64.encode(username)) + '&password=' + encodeURIComponent(Base64.encode(password)) + '&channel=' + encodeURIComponent(Base64.encode(channel)) + '&onlineusers=1' + '&req=_' + Math.floor(Math.random() * (999999 - 100 + 1)) + 100;
+	var _channel = channel;
+	var _server = server;
 	var options = {
 		host: server,
 		method: 'POST',
@@ -363,12 +368,12 @@ exports.listOnlineUsers = function(){
 						_timestamp += ' '+now.getHours()+':'+now.getMinutes()+':'+now.getSeconds();
 						if (parts.length > 3) {
 							//console.log({_user, _pass, _origin, _time, _timestamp});
-							console.log('USER: ' + (aa.bright + fg.cyan + _user + aa.reset) + ' ORIGIN: ' + (aa.bright + fg.cyan + _origin + aa.reset) + ' PASS: ' + (aa.bright + fg.cyan + _pass + aa.reset) + ' TIME: ' + (aa.bright + fg.cyan + _time + aa.reset) + ' TIMESTAMP: ' + (aa.bright + fg.cyan + _timestamp + aa.reset));
-							def.userIsOnline(_user, _pass, _origin, _time, _timestamp);
+							console.log('USER: ' + (aa.bright + fg.cyan + _user + aa.reset) + ' ORIGIN: ' + (aa.bright + fg.cyan + _origin + aa.reset) + ' PASS: ' + (aa.bright + fg.cyan + _pass + aa.reset) + ' CHANNEL: ' + (aa.bright + fg.cyan + _channel + aa.reset) + ' TIME: ' + (aa.bright + fg.cyan + _time + aa.reset) + ' TIMESTAMP: ' + (aa.bright + fg.cyan + _timestamp + aa.reset));
+							def.userIsOnline(_user, _pass, _origin, _time, _timestamp, _channel, _server);
 						} else {
 							//console.log({_user, _pass, _time, _timestamp});
-							console.log('USER: ' + (aa.bright + fg.cyan + _user + aa.reset) + ' PASS: ' + (aa.bright + fg.cyan + _pass + aa.reset) + ' TIME: ' + (aa.bright + fg.cyan + _time + aa.reset) + ' TIMESTAMP: ' + (aa.bright + fg.cyan + _timestamp + aa.reset));
-							def.userIsOnline(_user, _pass, '', _time, _timestamp);
+							console.log('USER: ' + (aa.bright + fg.cyan + _user + aa.reset) + ' PASS: ' + (aa.bright + fg.cyan + _pass + aa.reset) + ' CHANNEL: ' + (aa.bright + fg.cyan + _channel + aa.reset) + ' TIME: ' + (aa.bright + fg.cyan + _time + aa.reset) +  ' TIMESTAMP: ' + (aa.bright + fg.cyan + _timestamp + aa.reset));
+							def.userIsOnline(_user, _pass, '', _time, _timestamp, _channel, _server);
 						}
 					}
 				}
@@ -399,7 +404,8 @@ exports.sendMsg = function(msg){
 		res.on('data', function (response) {
 			if (response.length > 0) {
 				if (response == 'ERR_IP_BANNED') {
-					console.log('Your IP address is banned!');
+					//console.log('Your IP address is banned!');
+					console.log((aa.bright + fg.red) + 'Your IP address is banned!' + (aa.reset));
 				}
 			}
 		});
@@ -430,5 +436,3 @@ exports.banIP = function(ip){
 	req.write(params);
 	req.end();
 };
-
-
