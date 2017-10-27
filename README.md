@@ -22,3 +22,6 @@ leetchat.setUser("NiceBot", "PasswordforId", "general");
 leetchat.listOnlineUsers();
 leetchat.receiveMessages();
 ```
+## Information
+You cannot install this under -g or globally
+make sure the example js is in the root with the node_modules
