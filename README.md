@@ -27,7 +27,8 @@ leetchat.receiveMessages();
 ```
 ## Information
 You cannot install this under -g or globally.
-Make sure the example JavaScript code is in file called client.js and in same directory with leetchat.js
+Make sure the example JavaScript code is in file called client.js and in same directory with leetchat.js.
+Link to LeetChat: http://vps.unrealsecurity.net/leetchat/?general
 ## License
 Do What The Fuck You Want Public License
 https://spdx.org/licenses/WTFPL.html
